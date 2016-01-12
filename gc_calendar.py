@@ -91,27 +91,6 @@ def readConditions():
 		condition.entry2 = matcher.group(2).strip()
 		condition.entryToLeave = matcher.group(3).strip()
 		conditions.append(condition)
-# def readEntrys():
-# 	sectio_re = re.compile("\[([a-z]+)\]")
-# 	entry_file = open("entrys","r")
-# 	section = ""
-# 	while 1:
-# 		line1 = entry_file.readline()
-# 		if(0 == len(line1)): # EOF
-# 			break
-# 		if(line1.startswith("#") or 3 > len(line1)): # comment or empty string
-# 			continue
-# 		matcher = sectio_re.match(line1)
-# 		if ( None != matcher):
-# 			section = matcher.group(1)
-# 			continue
-# 		line2 = entry_file.readline().strip()
-
-# 		entry = buildEntryFromLine(line2)
-# 		entry.value = line1.strip()
-# 		entry.value_type = section
-
-# 		entrys.append(entry)
 
 def buildEntryFromLine(line):
 	entry = Entry()
@@ -153,17 +132,6 @@ def buildEntryFromLine(line):
 		else:
 			d = calculateDateByEntry(entry_types[startpoint], weekday, distance)				
 			entry.dates.append(d)
-	# if(len(entry_tokens) == 3):
-	# 	assert entry_tokens[2] in entry_types
-	# 	entry.startpoint = entry_tokens[2]
-	# elif(len(entry_tokens) == 4):
-	# 	if ("перед" == entry_tokens[2]):
-	# 		entry.distance = "-" + entry.distance
-	# 	else:
-	# 		entry.distance = "+" + entry.distance
-	# 	entry.startpoint = entry_tokens[3]
-	# elif(len(entry_tokens) > 4):
-	# 	entry.startpoint = ' '.join(entry_tokens[3:])
 
 	return entry
 
@@ -240,14 +208,6 @@ class CalendarDate:
 					self.additional = self.additional + " "+ entry.value
 				self.additional = self.additional.strip()
 
-		# if day_date == fixed_dates["Пасха"] + timedelta(days=+1):
-		# 	self.additional = ""
-		# 	self.saint = ""
-		# if day_date == fixed_dates["Пасха"] + timedelta(days=+2):
-		# 	self.additional = ""
-		# 	self.saint = ""
-
-
 def initCalendar():
 	months = range(12)
 	for month in months:
@@ -260,28 +220,7 @@ def initCalendar():
 			entry_by_date[d] = [] #{"saint" : [], "sundays": [], "additional": []}
 
 	print(len(days))
-# def readCalendarTemplate() :
-# 	months = range(1,13)
-# 	for month in months:
-# 		month_file = open(str(month) + ".ndm", "r")
-# 		assert month_file.readline().startswith(codecs.BOM_UTF8)
-# 		while 1:
-# 			line = month_file.readline()
-# 			if(0 == len(line)): # EOF
-# 				break
-# 			line = line.strip()
-# 			cal_date = CalendarDate()
-# 			cal_date.month = month
-# 			cal_date.day = int(line)
-# 			cal_date.celebr = month_file.readline().strip() 
-# 			cal_date.saint = month_file.readline().strip()
-# 			cal_date.additional = month_file.readline().strip()
-# 			cal_date.cross = month_file.readline().strip()
-# 			assert 0 == len(month_file.readline().strip())
-# 			days.append(cal_date)
-# 		assert month_sizes[month-1] == days[-1].day
-# 		month_file.close()
-				
+
 def filterEntries():
 	for c in conditions:
 		if date_by_label[c.entry1] == date_by_label[c.entry2]:
@@ -296,9 +235,6 @@ def applyEntries():
 	for day in days:
 		for entry in entry_by_date[day.date]:
 			day.applyEntry(entry)
-#	print(entrys[20])
-#	days[4].applyEntry(entrys[20])
-#	days[4].applyEntry(entrys[22])
 
 def cleanup():
 	for day in days:
@@ -337,73 +273,13 @@ def writeCalendar():
 	print (len(days))
 	print("Writing calendar to an output file")
 
-# def updateNew():
-# 	dir = str(year) + "new"
-# 	if not os.path.exists(dir):
-# 		os.makedirs(dir)
-	
-# 	total_days_written = 0
-# 	months = range(1,13)
-
-# 	montes = {1:"січня",2:"лютого",3:"березня",4:"квітня", 5:"травня",6:"червня",7:"липня",8:"серпня",9:"вересня",10:"жовтня",11:"листопада",12:"грудня"}
-
-# 	saints_file = open(dir + "/saints.txt", "w")
-# 	celebr_file = open(dir + "/celebr.txt", "w")
-# 	add_file = open(dir + "/add.txt", "w")
-
-# 	saints_file.write(codecs.BOM_UTF8 + "\n")
-# 	celebr_file.write(codecs.BOM_UTF8 + "\n")
-# 	add_file.write(codecs.BOM_UTF8 + "\n")
-
-# 	for month in months:
-# 		month_days_written = 0
-# 		while month_days_written < month_sizes[month-1]:
-# 			day = days[total_days_written + month_days_written]
-
-# 			if(day.saint.strip() != ""):
-# 				if(day.saint.strip().endswith(".")):
-# 					saints_file.write(day.saint.strip() + "\n")
-# 				else:
-# 					saints_file.write(day.saint.strip() + ".\n")
-# 				saints_file.write(str(day.day) + " " + montes[month] + "\n")
-# 				saints_file.write("\n")
-			
-# 			if(day.celebr.strip() != ""):
-# 				if(day.celebr.strip().endswith(".")):
-# 					celebr_file.write(day.celebr.strip() + "\n")
-# 				else:
-# 					celebr_file.write(day.celebr.strip() + ".\n")
-# 				celebr_file.write(str(day.day) + " " + montes[month] + "\n")
-# 				celebr_file.write("\n")
-			
-# 			if(day.additional.strip() != ""):
-# 				if(day.additional.strip().endswith(".")):
-# 					add_file.write(day.additional.strip() + "\n")
-# 				else:
-# 					add_file.write(day.additional.strip() + ".\n")
-# 				add_file.write(str(day.day) + " " + montes[month] + "\n")
-# 				add_file.write("\n")
-			
-# 			month_days_written+=1
-# 		total_days_written+=month_days_written
-# 	print (len(days))
-
-# 	saints_file.close()
-# 	celebr_file.close()
-# 	add_file.close()
-	# print("WritingNEW  calendar to an output file")
-
-
 initCalendar()
 readSaints()
 readCelebr()
 readAdditional()
 readConditions()
 filterEntries()
-print(entry_by_date[date(year, 1,18)])
-# readCalendarTemplate()
 applyEntries()
 cleanup()
 writeCalendar()
-
 
