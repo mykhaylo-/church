@@ -315,8 +315,6 @@ def writeHtml():
 	print("Writing calendar to an output file")
 
 
-
-
 initCalendar()
 readSaints()
 readCelebr()
@@ -326,5 +324,5 @@ filterEntries()
 applyEntries()
 cleanup()
 writeHtml()
-#writeCalendar()
+writeCalendar()
 
