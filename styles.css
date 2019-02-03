@@ -1,0 +1,27 @@
+body {
+	padding-left: 100px;
+	width: 700px;
+}
+.day {
+	/*width: 700px;*/
+	border-bottom: 1px solid lightgray;
+	margin-bottom: 5px;
+}
+.additional {
+	color: darkgoldenrod;
+}
+
+.celebr {
+	color: red;
+}
+
+.brick {
+	display: inline-block;
+	margin-right: 0.5rem;
+}
+
+.day span:nth-child(1) {
+	text-align: right;
+	margin-right: 0.5rem;
+	min-width: 2rem;
+}

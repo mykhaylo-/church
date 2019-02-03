@@ -3,15 +3,15 @@ import re,codecs,datetime,os
 from datetime import date, timedelta
 import calendar
 
-year = 2016
-fixed_dates = {"Пасха": date(year, 5, 1), "Йордан": date(year,1,19), "Різдво": date(year,1,7), "Іллі": date(year,8,2)}
+year = 2019
+fixed_dates = {"Пасха": date(year, 4, 28), "Йордан": date(year,1,19), "Різдво": date(year,1,7), "Іллі": date(year,8,2)}
 
 month_sizes = [31, 29 if calendar.isleap(year) else 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
 entry_types = {"місяця":-1,"січня":1,"лютого":2,"березня":3,"квітня":4,"травня":5,"червня":6,"липня":7,"серпня":8,"вересня":9,"жовтня":10,"листопада":11,"грудня":12}
 
 week_days = {"понеділок":0,"вівторок":1,"середа":2,"четвер":3,"пт":4,"субота":5,"неділя":6}
-
+month_names = ["Січень", "Лютий", "Березень", "Квітень", "Травень", "Червень", "Липень", "Серпень", "Вересень", "Жовтень", "Листопад", "Грудень"];
 days = []
 entry_by_date = {}
 date_by_label = {}
@@ -42,6 +42,7 @@ def readFile(fileName, entryType):
 
 		if not line1:
 			break
+
 		labelMatcher = labelRegex.match(line1);
 		label = None
 	
@@ -113,7 +114,6 @@ def buildEntryFromLine(line):
 		else:
 		 	assert entry_tokens[2] in entry_types
 		 	startpoint = entry_tokens[2]
-		
 		nestedEntryMatcher = nestedEntryRegex.match(startpoint)
 		if None != nestedEntryMatcher:
 			nestedEntryString = nestedEntryMatcher.group(1)
@@ -127,10 +127,10 @@ def buildEntryFromLine(line):
 		elif entry_types[startpoint] == -1:
 			months = range(1,13)
 			for month in months:
-				d = calculateDateByEntry(month, weekday, distance)		
+				d = calculateDateByEntry(month, weekday, distance)
 				entry.dates.append(d)
 		else:
-			d = calculateDateByEntry(entry_types[startpoint], weekday, distance)				
+			d = calculateDateByEntry(entry_types[startpoint], weekday, distance)
 			entry.dates.append(d)
 
 	return entry
@@ -223,6 +223,12 @@ def initCalendar():
 
 def filterEntries():
 	for c in conditions:
+		if c.entry2 == '*':
+			d = date_by_label[c.entry1]
+			for entry in list(entry_by_date[d]):
+				if entry.label != c.entryToLeave:
+					entry_by_date[d].remove(entry)
+			continue
 		if date_by_label[c.entry1] == date_by_label[c.entry2]:
 			d = date_by_label[c.entry1]
 			for entry in list(entry_by_date[d]):
@@ -273,6 +279,44 @@ def writeCalendar():
 	print (len(days))
 	print("Writing calendar to an output file")
 
+def writeHtml():
+
+	out = open(str(year) + ".html", "w")
+	out.write(codecs.BOM_UTF8 + "\n")
+	out.write("<html><body>")
+	out.write("<link rel=\"stylesheet\" type=\"text/css\" href=\"styles.css\" media=\"screen\" />")
+	months = range(1,13)
+	total_days_written = 0
+
+	for month in months:
+		out.write("<h2>" + month_names[month -1] + "</h2>\n")
+		month_days_written = 0
+		while month_days_written < month_sizes[month-1]:
+			day = days[total_days_written + month_days_written]
+			
+			isCelebr = day.celebr != '' or day.date.weekday() == 6 # sunday
+			isSaint = day.saint != ''
+
+			out.write("<div class =\"day "+ ("celebr" if isCelebr else '') + "\">\n")
+			out.write("<span class=\"brick\">" + str(day.date.day) + "</span>\n")
+			if day.celebr != '':
+				out.write("<span class=\"brick celebr\">" + day.celebr + "</span>\n")
+			if isSaint:
+				out.write("<span class=\"brick saint\">" + day.saint + "</span>\n")
+			out.write("<span class=\"brick additional\">" + day.additional + "</span>\n")
+			out.write("</div>\n")
+			month_days_written+=1
+		total_days_written+=month_days_written
+	
+	out.write("</body></html>\n");
+
+	out.close()
+	print (len(days))
+	print("Writing calendar to an output file")
+
+
+
+
 initCalendar()
 readSaints()
 readCelebr()
@@ -281,5 +325,6 @@ readConditions()
 filterEntries()
 applyEntries()
 cleanup()
-writeCalendar()
+writeHtml()
+#writeCalendar()
 
