@@ -1,0 +1,335 @@
+<html>
+<style type="text/css">
+@font-face {
+    font-family: "arial-narrow-regular";
+    src: url("ArialNarrow2.ttf") format("truetype");
+}
+
+.outer-wrapper {
+    border: 8px solid steelblue;
+}
+
+.frame {
+    background-color: steelblue;
+    /*padding: 45px;*/
+    border-image-source: url("border.png");
+    border-image-slice: 90 90;
+    border-image-width: 23px 23px;
+    border-image-repeat: repeat;
+    /*border-image-outset: 45px;*/
+    border-width: 23px;
+    border-style: solid;
+}
+
+.inner-wrapper {
+    /*background-color: white;*/
+    margin-top: -23px;
+    /*margin: 45px 45px 45px 45px;*/
+    /*border: 45px solid;*/
+    /*padding: -45px 30px 30px 30px;*/
+
+}
+
+.header {
+    text-align: center;
+    background-color: steelblue;
+    color: white;
+    margin: auto;
+    width: 510px;
+    font-family: serif;
+    font-size: 21px;
+    text-transform: uppercase;
+    /*margin-top: -55px;*/
+    /*height: 45px;*/
+    line-height: 23px;
+}
+
+.body {
+    background-color: lightblue;
+    border: 2px solid white;
+    margin: 8px;
+    padding: 8px;
+}
+
+.month,
+.year-image,
+.general {
+    /*background-color: steelblue;*/
+    border-image-source: url("month-border.svg");
+    border-image-slice: 22 22;
+    border-image-width: 25px 25px;
+    border-image-repeat: repeat;
+    border-width: 5px;
+    border-style: solid;
+
+    /*margin: 5px;*/
+
+}
+
+.year-image {
+    border-width: 22px;
+}
+
+.year {
+    font-family: verdana;
+    line-height: 1.2em;
+    font-weight: bold;
+    font-size: 80px;
+    text-align: center;
+    color: white;
+    text-shadow: -2px -2px 0 #633, 2px -2px 0 #633, -2px 2px 0 #633, 2px 2px 0 #633;
+}
+
+.month,
+.general {
+    background-color: rgba(255, 255, 255, 0.8);
+    /*margin: 5px;*/
+}
+
+.year-image,
+.year-details {
+    background-color: ivory;
+}
+
+.base-title {
+    font-size: 10px;
+    font-weight: bold;
+    text-align: center;
+    color: brown;
+    text-transform: uppercase;
+    font-family: sans-serif;
+}
+
+.month-data table {
+    margin-bottom: 1em;
+    font-size: 5px;
+    font-family: 'arial-narrow-regular';
+}
+
+.brick {
+    display: inline-block;
+}
+
+tr.month-row td {
+    padding: 1px 1px;
+}
+
+.additional {
+    color: #aa9900 !important;
+}
+
+.celebration,
+.celebr {
+    color: brown;
+}
+
+.january {
+    grid-area: january;
+}
+
+.february {
+    grid-area: february;
+}
+
+.march {
+    grid-area: march;
+}
+
+.april {
+    grid-area: april;
+}
+
+.may {
+    grid-area: may;
+}
+
+.june {
+    grid-area: june;
+}
+
+.july {
+    grid-area: july;
+}
+
+.august {
+    grid-area: august;
+}
+
+.september {
+    grid-area: september;
+}
+
+.october {
+    grid-area: october;
+}
+
+.november {
+    grid-area: november;
+}
+
+.december {
+    grid-area: december;
+}
+
+.center {
+    grid-area: center;
+}
+
+.general {
+    grid-area: general;
+}
+
+.grid-container {
+    grid-template-columns: 18% 18% auto 18% 18%;
+
+    /*grid-template-rows: 33% 33% 33%;*/
+    display: grid;
+    grid-template-areas:
+        'january february center july august'
+        'march april center september october'
+        'may june general november december';
+    gap: 8px;
+    /*padding: 3px;*/
+}
+
+
+.general-container {
+    font-size: 0.4em;
+    grid-template-columns: 50% 50%;
+
+    display: grid;
+    grid-template-areas:
+        'left right'
+        'bottom bottom';
+    gap: 8px;
+}
+
+.general-left {
+    grid-area: left;
+}
+
+.general-right {
+    grid-area: right;
+}
+
+.general-bottom {
+    grid-area: bottom;
+}
+</style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+<div class="outer-wrapper">
+    <div class="frame">
+        <div class="inner-wrapper">
+            <div class="header">
+                Греко-Католицький церковний календар
+            </div>
+            <div class="body">
+                <div class="grid-container">
+                    <div class="month january">
+                        <div class="base-title">Січень
+                        </div>
+                        <div class="month-data">
+                            {{january}}
+                        </div>
+                    </div>
+                    <div class="month february">
+                        <div class="base-title">Лютий
+                        </div>
+                        <div class="month-data">
+                            {{february}}
+                        </div>
+                    </div>
+                    <div class="month march">
+                        <div class="base-title">Березень
+                        </div>
+                        <div class="month-data">
+                            {{march}}
+                        </div>
+                    </div>
+                    <div class="month april">
+                        <div class="base-title">Квітень
+                        </div>
+                        <div class="month-data">
+                            {{april}}
+                        </div>
+                    </div>
+                    <div class="month may">
+                        <div class="base-title">Травень
+                        </div>
+                        <div class="month-data">
+                            {{may}}
+                        </div>
+                    </div>
+                    <div class="month june">
+                        <div class="base-title">Червень
+                        </div>
+                        <div class="month-data">
+                            {{june}}
+                        </div>
+                    </div>
+                    <div class="month july">
+                        <div class="base-title">Липень
+                        </div>
+                        <div class="month-data">
+                            {{july}}
+                        </div>
+                    </div>
+                    <div class="month august">
+                        <div class="base-title">Серпень
+                        </div>
+                        <div class="month-data">
+                            {{august}}
+                        </div>
+                    </div>
+                    <div class="month september">
+                        <div class="base-title">Вересень
+                        </div>
+                        <div class="month-data">
+                            {{september}}
+                        </div>
+                    </div>
+                    <div class="month october">
+                        <div class="base-title">Жовтень
+                        </div>
+                        <div class="month-data">
+                            {{october}}
+                        </div>
+                    </div>
+                    <div class="month november">
+                        <div class="base-title">Листопад
+                        </div>
+                        <div class="month-data">
+                            {{november}}
+                        </div>
+                    </div>
+                    <div class="month december">
+                        <div class="base-title">Грудень
+                        </div>
+                        <div class="month-data">
+                            {{december}}
+                        </div>
+                    </div>
+                    <div class="center">
+                        <div class="year">2023</div>
+                        <div class="year-image"><img src="image.jpg" class="img-fluid"></div>
+                    </div>
+                    <div class="general general-container">
+                        <div class="general-left">
+                            <h3 class="base-title">Пости</h3>
+                            <h3 class="base-title">Одноденні строгі пости</h3>
+                        </div>
+                        <div class="general-right">
+                            <h3 class="base-title">Заборонений час для весіль і забав</h3>
+                            <h3 class="base-title">Загальниці</h3>
+                        </div>
+                        <div class="general-bottom">
+                            Впродовж року кожного місяця:<span class="celebration">
+                                7 число </span> - Набоженство до Празького Дитятка-Ісуса<br>
+                            <span class="celebration">13 число </span>- День Матері Божої Фатімської<br>
+                            <span class="celebration">21 число</span> - Набоженство до Дитятка-Марії
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+</html>

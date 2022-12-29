@@ -3,14 +3,16 @@ import re,codecs,datetime,os
 from datetime import date, timedelta
 import calendar
 
-year = 2019
-fixed_dates = {"Пасха": date(year, 4, 28), "Йордан": date(year,1,19), "Різдво": date(year,1,7), "Іллі": date(year,8,2)}
+year = 2022
+fixed_dates = {"Пасха": date(year, 4, 24), "Йордан": date(year,1,19), "Різдво": date(year,1,7), "Іллі": date(year,8,2)}
 
 month_sizes = [31, 29 if calendar.isleap(year) else 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
 entry_types = {"місяця":-1,"січня":1,"лютого":2,"березня":3,"квітня":4,"травня":5,"червня":6,"липня":7,"серпня":8,"вересня":9,"жовтня":10,"листопада":11,"грудня":12}
 
 week_days = {"понеділок":0,"вівторок":1,"середа":2,"четвер":3,"пт":4,"субота":5,"неділя":6}
+
+week_days_short = {0 : "П", 1: "В",2:"С" ,3:"Ч" ,4:"П", 5:"С", 6:"Н"}
 month_names = ["Січень", "Лютий", "Березень", "Квітень", "Травень", "Червень", "Липень", "Серпень", "Вересень", "Жовтень", "Листопад", "Грудень"];
 days = []
 entry_by_date = {}
@@ -262,8 +264,8 @@ def writeCalendar():
 	months = range(1,13)
 
 	for month in months:
-		month_file = open(dir + "/" + str(month) + ".ndm", "w")
-		month_file.write(codecs.BOM_UTF8 + "\n")
+		month_file = codecs.open(dir + "/" + str(month) + ".ndm", "w", "utf-8-sig")
+		# month_file.write(codecs.BOM_UTF8 + '\n')
 		month_days_written = 0
 		while month_days_written < month_sizes[month-1]:
 			day = days[total_days_written + month_days_written]
@@ -277,40 +279,54 @@ def writeCalendar():
 		total_days_written+=month_days_written
 		month_file.close()
 	print (len(days))
-	print("Writing calendar to an output file")
+	print("Writing calendar to an output file. Done...")
 
 def writeHtml():
-
-	out = open(str(year) + ".html", "w")
-	out.write(codecs.BOM_UTF8 + "\n")
-	out.write("<html><body>")
-	out.write("<link rel=\"stylesheet\" type=\"text/css\" href=\"styles.css\" media=\"screen\" />")
-	months = range(1,13)
+	months = range(0,12)
 	total_days_written = 0
 
-	for month in months:
-		out.write("<h2>" + month_names[month -1] + "</h2>\n")
-		month_days_written = 0
-		while month_days_written < month_sizes[month-1]:
-			day = days[total_days_written + month_days_written]
-			
-			isCelebr = day.celebr != '' or day.date.weekday() == 6 # sunday
-			isSaint = day.saint != ''
+	tokens_to_months = {'{{january}}': 0, '{{february}}':1,'{{march}}':2,'{{april}}':3,'{{may}}':4,'{{june}}':5,'{{july}}':6,'{{august}}':7,'{{september}}':8,'{{october}}':9,'{{november}}':10,'{{december}}':11}
 
-			out.write("<div class =\"day "+ ("celebr" if isCelebr else '') + "\">\n")
-			out.write("<span class=\"brick\">" + str(day.date.day) + "</span>\n")
-			if day.celebr != '':
-				out.write("<span class=\"brick celebr\">" + day.celebr + "</span>\n")
-			if isSaint:
-				out.write("<span class=\"brick saint\">" + day.saint + "</span>\n")
-			out.write("<span class=\"brick additional\">" + day.additional + "</span>\n")
-			out.write("</div>\n")
-			month_days_written+=1
-		total_days_written+=month_days_written
-	
-	out.write("</body></html>\n");
+	with open('html/template.html', 'r') as template, open('html/'+ str(year) + ".html", 'w') as out:
+		for line in template:
+			if line.strip() in tokens_to_months:
+				month = tokens_to_months[line.strip()]
+				month_days_written = 0
+				out.write("<table class=\"table table-borderless\"><tbody>")
+				while month_days_written < month_sizes[month]:
+					day = days[total_days_written + month_days_written]
+					
+					isCelebr = day.celebr != '' or day.date.weekday() == 6 # sunday
+					isSaint = day.saint != ''
+					out.write("<tr class=\"month-row "+ ("celebr" if isCelebr else '')+"\">\n")
+					out.write("<td class=\"text-right\">\n")
+					out.write( str(day.date.day) + "</td>\n")
+					out.write("<td>" + week_days_short[day.date.weekday()] + "</td>\n<td>")
+					if day.celebr != '':
+						out.write("<span class=\" celebr\">" + day.celebr + "</span>\n")
+					if isSaint:
+						out.write("<span class=\" saint\">" + day.saint + "</span>\n")
+					out.write("<span class=\" additional\">" + day.additional + "</span></td>\n")
+					out.write("</tr>\n")
+					
+					# out.write("<div class =\"day "+ ("celebr" if isCelebr else '') + "\">\n")
+					# out.write("<span class=\"brick\">" + str(day.date.day) + "</span>\n")
+					# out.write("<span class=\"brick\">" + week_days_short[day.date.weekday()] + "</span>\n")
+					# if day.celebr != '':
+					# 	out.write("<span class=\" celebr\">" + day.celebr + "</span>\n")
+					# if isSaint:
+					# 	out.write("<span class=\" saint\">" + day.saint + "</span>\n")
+					# out.write("<span class=\" additional\">" + day.additional + "</span>\n")
+					# out.write("</div>\n")
 
-	out.close()
+					month_days_written+=1
+				total_days_written+=month_days_written
+				out.write("</tbody></table>")
+			else:
+				out.write(line)
+		out.close();
+		template.close();
+
 	print (len(days))
 	print("Writing calendar to an output file")
 
