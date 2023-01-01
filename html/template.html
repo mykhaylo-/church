@@ -83,6 +83,7 @@
 .month,
 .general {
     background-color: rgba(255, 255, 255, 0.8);
+    font-family: 'arial-narrow-regular';
     /*margin: 5px;*/
 }
 
@@ -103,7 +104,6 @@
 .month-data table {
     margin-bottom: 1em;
     font-size: 5px;
-    font-family: 'arial-narrow-regular';
 }
 
 .brick {
@@ -310,17 +310,31 @@ tr.month-row td {
                         </div>
                     </div>
                     <div class="center">
-                        <div class="year">2023</div>
+                        <div class="year">
+                            {{year}}
+                        </div>
                         <div class="year-image"><img src="image.jpg" class="img-fluid"></div>
                     </div>
                     <div class="general general-container">
                         <div class="general-left">
                             <h3 class="base-title">Пости</h3>
+                            <div>
+                                {{long-fastings}}
+                            </div>
                             <h3 class="base-title">Одноденні строгі пости</h3>
+                            <div>
+                                {{one-day-fastings}}
+                            </div>
                         </div>
                         <div class="general-right">
                             <h3 class="base-title">Заборонений час для весіль і забав</h3>
+                            <div>
+                                {{forbidden-times}}
+                            </div>
                             <h3 class="base-title">Загальниці</h3>
+                            <div>
+                                {{fasting-free-times}}
+                            </div>
                         </div>
                         <div class="general-bottom">
                             Впродовж року кожного місяця:<span class="celebration">

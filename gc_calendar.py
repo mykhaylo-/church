@@ -1,8 +1,10 @@
 # coding=utf-8
 import re,codecs,datetime,os
+import locale
 from datetime import date, timedelta
 import calendar
 
+locale.setlocale(locale.LC_TIME, "uk_UA")
 year = 2022
 fixed_dates = {"Пасха": date(year, 4, 24), "Йордан": date(year,1,19), "Різдво": date(year,1,7), "Іллі": date(year,8,2)}
 
@@ -14,10 +16,22 @@ week_days = {"понеділок":0,"вівторок":1,"середа":2,"че�
 
 week_days_short = {0 : "П", 1: "В",2:"С" ,3:"Ч" ,4:"П", 5:"С", 6:"Н"}
 month_names = ["Січень", "Лютий", "Березень", "Квітень", "Травень", "Червень", "Липень", "Серпень", "Вересень", "Жовтень", "Листопад", "Грудень"];
+
+tokens_to_months = {'{{january}}': 0, '{{february}}':1,'{{march}}':2,'{{april}}':3,'{{may}}':4,'{{june}}':5,'{{july}}':6,'{{august}}':7,'{{september}}':8,'{{october}}':9,'{{november}}':10,'{{december}}':11}
+longFastingsToken = "{{long-fastings}}"
+oneDayFastingsToken = "{{one-day-fastings}}"
+fastingFreeTimesToken = "{{fasting-free-times}}"
+forbiddenTimesToken = "{{forbidden-times}}"
+
 days = []
 entry_by_date = {}
 date_by_label = {}
 conditions = []
+
+oneDayFastings = []
+longFastings = []
+forbiddenTimes = []
+fastFreeTimes = []
 
 nestedEntryRegex = re.compile("\{(.*)\}")
 fixedDateRegex = re.compile("^([0-9]{1,2}) (січня|лютого|березня|квітня|травня|червня|липня|серпня|вересня|жовтня|листопада|грудня)$", re.U)
@@ -30,6 +44,19 @@ def readLine(_file):
 		if not line:
 			break
 		if (line.startswith("#") or 3 > len(line)): # comment or empty string
+			continue
+		else:
+			line = line.strip()
+			break
+
+	return line
+
+def readLineEvenIfEmpty(_file):
+	while True:
+		line = _file.readline()
+		if not line:
+			break
+		if line.startswith("#"): # comment or empty string
 			continue
 		else:
 			line = line.strip()
@@ -95,6 +122,64 @@ def readConditions():
 		condition.entryToLeave = matcher.group(3).strip()
 		conditions.append(condition)
 
+def readFastings():
+	file = open("fastings.txt","r")
+	while 1:
+		line1 = readLine(file)
+		if not line1:
+			break
+		dateRange = DateRange()
+		dateRange.title = line1
+		line2 = readLineEvenIfEmpty(file)
+		if not line2:
+			longFastings.append(dateRange)
+		else:
+			startDateEntry = buildEntryFromLine(line2)
+			dateRange.startDate = startDateEntry.dates[0]
+			line3 = readLineEvenIfEmpty(file)
+			if not line3:
+				oneDayFastings.append(dateRange)
+			else:
+				endDateEntry = buildEntryFromLine(line3)
+				dateRange.endDate = endDateEntry.dates[0]
+				longFastings.append(dateRange)
+	file.close()
+
+def readForbiddenTimes():
+	file = open("forbidden-times.txt","r")
+	while 1:
+		line1 = readLine(file)
+		if not line1:
+			break
+		dateRange = DateRange()
+		dateRange.title = line1
+		forbiddenTimes.append(dateRange)
+		
+		line2 = readLineEvenIfEmpty(file)
+		if line2:
+			startDateEntry = buildEntryFromLine(line2)
+			dateRange.startDate = startDateEntry.dates[0]
+			line3 = readLineEvenIfEmpty(file)
+			if line3:
+				endDateEntry = buildEntryFromLine(line3)
+				dateRange.endDate = endDateEntry.dates[0]
+	file.close()
+
+def readFastFreeTimes():
+	file = open("fast-free.txt","r")
+	while 1:
+		line1 = readLine(file)
+		line2 = readLine(file)
+
+		if not line1:
+			break
+		dateRange = DateRange()
+		fastFreeTimes.append(dateRange)
+
+		dateRange.startDate = buildEntryFromLine(line1).dates[0]
+		dateRange.endDate = buildEntryFromLine(line2).dates[0]
+	file.close()
+
 def buildEntryFromLine(line):
 	entry = Entry()
 	entry.raw_value = line
@@ -136,6 +221,8 @@ def buildEntryFromLine(line):
 			entry.dates.append(d)
 
 	return entry
+
+
 
 class Condition:
 	def isValid():
@@ -183,6 +270,14 @@ def calculateDateByEntry(month, weekday, number):
 			if 0 == count:
 				return day_date
 	return None
+
+class DateRange:
+	startDate = None
+	endDate = None
+	title = ""
+	def __repr__(self):
+		return title
+
 
 class CalendarDate:
 	date = None
@@ -281,12 +376,13 @@ def writeCalendar():
 	print (len(days))
 	print("Writing calendar to an output file. Done...")
 
+def dateNmonth(date):
+	return date.strftime("%-d %B")
+
 def writeHtml():
 	months = range(0,12)
 	total_days_written = 0
-
-	tokens_to_months = {'{{january}}': 0, '{{february}}':1,'{{march}}':2,'{{april}}':3,'{{may}}':4,'{{june}}':5,'{{july}}':6,'{{august}}':7,'{{september}}':8,'{{october}}':9,'{{november}}':10,'{{december}}':11}
-
+	
 	with open('html/template.html', 'r') as template, open('html/'+ str(year) + ".html", 'w') as out:
 		for line in template:
 			if line.strip() in tokens_to_months:
@@ -309,19 +405,39 @@ def writeHtml():
 					out.write("<span class=\" additional\">" + day.additional + "</span></td>\n")
 					out.write("</tr>\n")
 					
-					# out.write("<div class =\"day "+ ("celebr" if isCelebr else '') + "\">\n")
-					# out.write("<span class=\"brick\">" + str(day.date.day) + "</span>\n")
-					# out.write("<span class=\"brick\">" + week_days_short[day.date.weekday()] + "</span>\n")
-					# if day.celebr != '':
-					# 	out.write("<span class=\" celebr\">" + day.celebr + "</span>\n")
-					# if isSaint:
-					# 	out.write("<span class=\" saint\">" + day.saint + "</span>\n")
-					# out.write("<span class=\" additional\">" + day.additional + "</span>\n")
-					# out.write("</div>\n")
-
 					month_days_written+=1
 				total_days_written+=month_days_written
 				out.write("</tbody></table>")
+			elif line.strip() == longFastingsToken:
+				for f in longFastings:
+					out.write(f.title)
+					if (f.startDate):
+						out.write(" з " + dateNmonth(f.startDate))
+						if(f.endDate):
+							out.write(" по " + dateNmonth(f.endDate) +"<br>")
+						else:
+							out.write("<br>")
+					else:
+						out.write("<br>")
+			elif line.strip() == oneDayFastingsToken:
+				for f in oneDayFastings:
+					out.write(dateNmonth(f.startDate) + " - " + f.title + "<br>")
+			elif line.strip() == forbiddenTimesToken:
+				for f in forbiddenTimes:
+					out.write(f.title)
+					if (f.startDate):
+						out.write(" - " + dateNmonth(f.startDate))
+						if(f.endDate):
+							out.write(" - " + dateNmonth(f.endDate) +"<br>")
+						else:
+							out.write("<br>")
+					else:
+						out.write("<br>")
+			elif line.strip() == fastingFreeTimesToken:
+				for f in fastFreeTimes:
+					out.write("з " + dateNmonth(f.startDate) + " по " + dateNmonth(f.endDate) + "<br>")
+			elif line.strip() == "{{year}}":
+				out.write(repr(year))
 			else:
 				out.write(line)
 		out.close();
@@ -332,6 +448,9 @@ def writeHtml():
 
 
 initCalendar()
+readFastings()
+readForbiddenTimes()
+readFastFreeTimes()
 readSaints()
 readCelebr()
 readAdditional()
