@@ -3,10 +3,12 @@ import re,codecs,datetime,os
 import locale
 from datetime import date, timedelta
 import calendar
+import json
+
 
 locale.setlocale(locale.LC_TIME, "uk_UA")
-year = 2022
-fixed_dates = {"Пасха": date(year, 4, 24), "Йордан": date(year,1,19), "Різдво": date(year,1,7), "Іллі": date(year,8,2)}
+year = 2023 # is initialized using fixed_dates
+fixed_dates = {} # is loaded from the file
 
 month_sizes = [31, 29 if calendar.isleap(year) else 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
@@ -96,18 +98,18 @@ def readFile(fileName, entryType):
 
 def readSaints():
 	print("Read saints")
-	readFile("saints.txt", "saint")
+	readFile("new-style/saints.txt", "saint")
 
 def readCelebr():
 	print("Read celebr")
-	readFile("celebr.txt", "sundays")
+	readFile("new-style/celebr.txt", "sundays")
 	
 def readAdditional():
 	print("Read additional")
-	readFile("add.txt", "additional")
+	readFile("new-style/add.txt", "additional")
 
 def readConditions():
-	file = open("conditions","r")
+	file = open("new-style/conditions","r")
 	while 1:
 		line1 = readLine(file)
 		if not line1:
@@ -123,7 +125,7 @@ def readConditions():
 		conditions.append(condition)
 
 def readFastings():
-	file = open("fastings.txt","r")
+	file = open("new-style/fastings.txt","r")
 	while 1:
 		line1 = readLine(file)
 		if not line1:
@@ -146,7 +148,7 @@ def readFastings():
 	file.close()
 
 def readForbiddenTimes():
-	file = open("forbidden-times.txt","r")
+	file = open("new-style/forbidden-times.txt","r")
 	while 1:
 		line1 = readLine(file)
 		if not line1:
@@ -166,7 +168,7 @@ def readForbiddenTimes():
 	file.close()
 
 def readFastFreeTimes():
-	file = open("fast-free.txt","r")
+	file = open("new-style/fast-free.txt","r")
 	while 1:
 		line1 = readLine(file)
 		line2 = readLine(file)
@@ -199,8 +201,8 @@ def buildEntryFromLine(line):
 			distance = "+" + distance
 			startpoint = ' '.join(entry_tokens[3:])
 		else:
-		 	assert entry_tokens[2] in entry_types
-		 	startpoint = entry_tokens[2]
+			assert entry_tokens[2] in entry_types
+			startpoint = entry_tokens[2]
 		nestedEntryMatcher = nestedEntryRegex.match(startpoint)
 		if None != nestedEntryMatcher:
 			nestedEntryString = nestedEntryMatcher.group(1)
@@ -305,7 +307,23 @@ class CalendarDate:
 					self.additional = self.additional + " "+ entry.value
 				self.additional = self.additional.strip()
 
+def datetime_parser(dct):
+	regex = re.compile("^([0-9]{2})/([0-9]{2})$")
+	for k, v in dct.items():
+		matcher = regex.match(v) # date matcher
+		if isinstance(v, str) and None != matcher:
+			try:
+				dct[k] = date(year, int(matcher.group(1)), int(matcher.group(2)))
+			except:
+				pass
+	return dct
+
 def initCalendar():
+	global fixed_dates
+
+	with open("new-style/fixed_dates.json") as file:
+		fixed_dates = json.loads(file.read(), object_hook=datetime_parser)
+
 	months = range(12)
 	for month in months:
 		m_days = range(month_sizes[month])
@@ -316,7 +334,10 @@ def initCalendar():
 			days.append(cal_date)
 			entry_by_date[d] = [] #{"saint" : [], "sundays": [], "additional": []}
 
+	print(year)
 	print(len(days))
+
+
 
 def filterEntries():
 	for c in conditions:
@@ -445,7 +466,6 @@ def writeHtml():
 
 	print (len(days))
 	print("Writing calendar to an output file")
-
 
 initCalendar()
 readFastings()
