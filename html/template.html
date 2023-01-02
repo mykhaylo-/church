@@ -1,8 +1,15 @@
 <html>
 <style type="text/css">
 @font-face {
-    font-family: "arial-narrow-regular";
+    font-family: "arial-narrow";
     src: url("ArialNarrow2.ttf") format("truetype");
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: "arial-narrow";
+    src: url("ARIALNB.TTF") format("truetype");
+    font-weight: bold;
 }
 
 .outer-wrapper {
@@ -83,8 +90,10 @@
 .month,
 .general {
     background-color: rgba(255, 255, 255, 0.8);
-    font-family: 'arial-narrow-regular';
-    /*margin: 5px;*/
+    font-family: 'arial-narrow';
+}
+.month {
+    padding: 0 5px 0 5px;
 }
 
 .year-image,
@@ -98,7 +107,8 @@
     text-align: center;
     color: brown;
     text-transform: uppercase;
-    font-family: sans-serif;
+    /*font-family: sans-serif;*/
+    margin: 0.3em;
 }
 
 .month-data table {
@@ -195,8 +205,7 @@ tr.month-row td {
 
 .general-container {
     font-size: 0.4em;
-    grid-template-columns: 50% 50%;
-
+    padding: 8px;
     display: grid;
     grid-template-areas:
         'left right'
@@ -213,6 +222,7 @@ tr.month-row td {
 }
 
 .general-bottom {
+    font-size: larger;
     grid-area: bottom;
 }
 </style>
@@ -226,85 +236,85 @@ tr.month-row td {
             <div class="body">
                 <div class="grid-container">
                     <div class="month january">
-                        <div class="base-title">Січень
-                        </div>
-                        <div class="month-data">
-                            {{january}}
-                        </div>
+                        <h3 class="base-title">Січень
+                            </h3h3>
+                            <div class="month-data">
+                                {{january}}
+                            </div>
                     </div>
                     <div class="month february">
-                        <div class="base-title">Лютий
-                        </div>
+                        <h3 class="base-title">Лютий
+                        </h3>
                         <div class="month-data">
                             {{february}}
                         </div>
                     </div>
                     <div class="month march">
-                        <div class="base-title">Березень
-                        </div>
+                        <h3 class="base-title">Березень
+                        </h3>
                         <div class="month-data">
                             {{march}}
                         </div>
                     </div>
                     <div class="month april">
-                        <div class="base-title">Квітень
-                        </div>
+                        <h3 class="base-title">Квітень
+                        </h3>
                         <div class="month-data">
                             {{april}}
                         </div>
                     </div>
                     <div class="month may">
-                        <div class="base-title">Травень
-                        </div>
+                        <h3 class="base-title">Травень
+                        </h3>
                         <div class="month-data">
                             {{may}}
                         </div>
                     </div>
                     <div class="month june">
-                        <div class="base-title">Червень
-                        </div>
+                        <h3 class="base-title">Червень
+                        </h3>
                         <div class="month-data">
                             {{june}}
                         </div>
                     </div>
                     <div class="month july">
-                        <div class="base-title">Липень
-                        </div>
+                        <h3 class="base-title">Липень
+                        </h3>
                         <div class="month-data">
                             {{july}}
                         </div>
                     </div>
                     <div class="month august">
-                        <div class="base-title">Серпень
-                        </div>
+                        <h3 class="base-title">Серпень
+                        </h3>
                         <div class="month-data">
                             {{august}}
                         </div>
                     </div>
                     <div class="month september">
-                        <div class="base-title">Вересень
-                        </div>
+                        <h3 class="base-title">Вересень
+                        </h3>
                         <div class="month-data">
                             {{september}}
                         </div>
                     </div>
                     <div class="month october">
-                        <div class="base-title">Жовтень
-                        </div>
+                        <h3 class="base-title">Жовтень
+                        </h3>
                         <div class="month-data">
                             {{october}}
                         </div>
                     </div>
                     <div class="month november">
-                        <div class="base-title">Листопад
-                        </div>
+                        <h3 class="base-title">Листопад
+                        </h3>
                         <div class="month-data">
                             {{november}}
                         </div>
                     </div>
                     <div class="month december">
-                        <div class="base-title">Грудень
-                        </div>
+                        <h3 class="base-title">Грудень
+                        </h3>
                         <div class="month-data">
                             {{december}}
                         </div>
@@ -321,26 +331,31 @@ tr.month-row td {
                             <div>
                                 {{long-fastings}}
                             </div>
-                            <h3 class="base-title">Одноденні строгі пости</h3>
+                            <h3 class="base-title mt-3">Одноденні строгі пости</h3>
                             <div>
                                 {{one-day-fastings}}
                             </div>
                         </div>
                         <div class="general-right">
-                            <h3 class="base-title">Заборонений час для весіль і забав</h3>
+                            <h3 class="base-title">Заборонений час <br /> для весіль і забав</h3>
                             <div>
                                 {{forbidden-times}}
                             </div>
-                            <h3 class="base-title">Загальниці</h3>
+                            <h3 class="base-title mt-2">Загальниці</h3>
                             <div>
                                 {{fasting-free-times}}
                             </div>
                         </div>
-                        <div class="general-bottom">
-                            Впродовж року кожного місяця:<span class="celebration">
-                                7 число </span> - Набоженство до Празького Дитятка-Ісуса<br>
-                            <span class="celebration">13 число </span>- День Матері Божої Фатімської<br>
-                            <span class="celebration">21 число</span> - Набоженство до Дитятка-Марії
+                        <div class="general-bottom container">
+                            <div class="row no-gutters">
+                                <div class="col-auto mr-1">Впродовж року кожного місяця:</div>
+                                <div class="col">
+                                    <span class="celebration">
+                                        7 число </span> - Набоженство до Празького Дитятка-Ісуса<br>
+                                    <span class="celebration">13 число </span>- День Матері Божої Фатімської<br>
+                                    <span class="celebration">21 число</span> - Набоженство до Дитятка-Марії
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -1,8 +1,15 @@
 <html>
 <style type="text/css">
 @font-face {
-    font-family: "arial-narrow-regular";
+    font-family: "arial-narrow";
     src: url("ArialNarrow2.ttf") format("truetype");
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: "arial-narrow";
+    src: url("ARIALNB.TTF") format("truetype");
+    font-weight: bold;
 }
 
 .outer-wrapper {
@@ -83,7 +90,10 @@
 .month,
 .general {
     background-color: rgba(255, 255, 255, 0.8);
-    /*margin: 5px;*/
+    font-family: 'arial-narrow';
+}
+.month {
+    padding: 0 5px 0 5px;
 }
 
 .year-image,
@@ -97,13 +107,13 @@
     text-align: center;
     color: brown;
     text-transform: uppercase;
-    font-family: sans-serif;
+    /*font-family: sans-serif;*/
+    margin: 0.3em;
 }
 
 .month-data table {
     margin-bottom: 1em;
     font-size: 5px;
-    font-family: 'arial-narrow-regular';
 }
 
 .brick {
@@ -195,8 +205,7 @@ tr.month-row td {
 
 .general-container {
     font-size: 0.4em;
-    grid-template-columns: 50% 50%;
-
+    padding: 8px;
     display: grid;
     grid-template-areas:
         'left right'
@@ -213,6 +222,7 @@ tr.month-row td {
 }
 
 .general-bottom {
+    font-size: larger;
     grid-area: bottom;
 }
 </style>
@@ -226,9 +236,9 @@ tr.month-row td {
             <div class="body">
                 <div class="grid-container">
                     <div class="month january">
-                        <div class="base-title">Січень
-                        </div>
-                        <div class="month-data">
+                        <h3 class="base-title">Січень
+                            </h3h3>
+                            <div class="month-data">
 <table class="table table-borderless"><tbody><tr class="month-row ">
 <td class="text-right">
 1</td>
@@ -449,11 +459,11 @@ tr.month-row td {
 <td><span class=" saint">Свв. Атаназія і Кирила, архієпископів Александрійських, св. Йоана Боско.</span>
 <span class=" additional"></span></td>
 </tr>
-</tbody></table>                        </div>
+</tbody></table>                            </div>
                     </div>
                     <div class="month february">
-                        <div class="base-title">Лютий
-                        </div>
+                        <h3 class="base-title">Лютий
+                        </h3>
                         <div class="month-data">
 <table class="table table-borderless"><tbody><tr class="month-row ">
 <td class="text-right">
@@ -658,8 +668,8 @@ tr.month-row td {
 </tbody></table>                        </div>
                     </div>
                     <div class="month march">
-                        <div class="base-title">Березень
-                        </div>
+                        <h3 class="base-title">Березень
+                        </h3>
                         <div class="month-data">
 <table class="table table-borderless"><tbody><tr class="month-row ">
 <td class="text-right">
@@ -885,8 +895,8 @@ tr.month-row td {
 </tbody></table>                        </div>
                     </div>
                     <div class="month april">
-                        <div class="base-title">Квітень
-                        </div>
+                        <h3 class="base-title">Квітень
+                        </h3>
                         <div class="month-data">
 <table class="table table-borderless"><tbody><tr class="month-row ">
 <td class="text-right">
@@ -1104,8 +1114,8 @@ tr.month-row td {
 </tbody></table>                        </div>
                     </div>
                     <div class="month may">
-                        <div class="base-title">Травень
-                        </div>
+                        <h3 class="base-title">Травень
+                        </h3>
                         <div class="month-data">
 <table class="table table-borderless"><tbody><tr class="month-row celebr">
 <td class="text-right">
@@ -1332,8 +1342,8 @@ tr.month-row td {
 </tbody></table>                        </div>
                     </div>
                     <div class="month june">
-                        <div class="base-title">Червень
-                        </div>
+                        <h3 class="base-title">Червень
+                        </h3>
                         <div class="month-data">
 <table class="table table-borderless"><tbody><tr class="month-row ">
 <td class="text-right">
@@ -1555,8 +1565,8 @@ tr.month-row td {
 </tbody></table>                        </div>
                     </div>
                     <div class="month july">
-                        <div class="base-title">Липень
-                        </div>
+                        <h3 class="base-title">Липень
+                        </h3>
                         <div class="month-data">
 <table class="table table-borderless"><tbody><tr class="month-row celebr">
 <td class="text-right">
@@ -1784,8 +1794,8 @@ tr.month-row td {
 </tbody></table>                        </div>
                     </div>
                     <div class="month august">
-                        <div class="base-title">Серпень
-                        </div>
+                        <h3 class="base-title">Серпень
+                        </h3>
                         <div class="month-data">
 <table class="table table-borderless"><tbody><tr class="month-row ">
 <td class="text-right">
@@ -2010,8 +2020,8 @@ tr.month-row td {
 </tbody></table>                        </div>
                     </div>
                     <div class="month september">
-                        <div class="base-title">Вересень
-                        </div>
+                        <h3 class="base-title">Вересень
+                        </h3>
                         <div class="month-data">
 <table class="table table-borderless"><tbody><tr class="month-row ">
 <td class="text-right">
@@ -2230,8 +2240,8 @@ tr.month-row td {
 </tbody></table>                        </div>
                     </div>
                     <div class="month october">
-                        <div class="base-title">Жовтень
-                        </div>
+                        <h3 class="base-title">Жовтень
+                        </h3>
                         <div class="month-data">
 <table class="table table-borderless"><tbody><tr class="month-row ">
 <td class="text-right">
@@ -2458,8 +2468,8 @@ tr.month-row td {
 </tbody></table>                        </div>
                     </div>
                     <div class="month november">
-                        <div class="base-title">Листопад
-                        </div>
+                        <h3 class="base-title">Листопад
+                        </h3>
                         <div class="month-data">
 <table class="table table-borderless"><tbody><tr class="month-row ">
 <td class="text-right">
@@ -2678,8 +2688,8 @@ tr.month-row td {
 </tbody></table>                        </div>
                     </div>
                     <div class="month december">
-                        <div class="base-title">Грудень
-                        </div>
+                        <h3 class="base-title">Грудень
+                        </h3>
                         <div class="month-data">
 <table class="table table-borderless"><tbody><tr class="month-row ">
 <td class="text-right">
@@ -2904,23 +2914,37 @@ tr.month-row td {
 </tbody></table>                        </div>
                     </div>
                     <div class="center">
-                        <div class="year">2023</div>
+                        <div class="year">
+2022                        </div>
                         <div class="year-image"><img src="image.jpg" class="img-fluid"></div>
                     </div>
                     <div class="general general-container">
                         <div class="general-left">
                             <h3 class="base-title">Пости</h3>
-                            <h3 class="base-title">Одноденні строгі пости</h3>
+                            <div>
+Великий піст з <span class="celebration">7 березня</span> по <span class="celebration">23 квітня</span><br>Петрівка з <span class="celebration">20 червня</span> по <span class="celebration">11 липня</span><br>Успенський піст з <span class="celebration">14 серпня</span> по <span class="celebration">27 серпня</span><br>Пилипівка з <span class="celebration">28 листопада</span> по <span class="celebration">6 січня</span><br>Кожна середа і п'ятниця протягом усього року, за винятком загальниць<br>                            </div>
+                            <h3 class="base-title mt-3">Одноденні строгі пости</h3>
+                            <div>
+<span class="celebration">6 січня</span> - Навечір'я Рождества Христового<br><span class="celebration">18 січня</span> - Навечір'я Богоявлення<br><span class="celebration">7 березня</span> - Початок Великого Посту<br><span class="celebration">22 квітня</span> - Велика П'ятниця<br><span class="celebration">11 вересня</span> - Усікновення Глави Йоана Хрестителя<br><span class="celebration">27 вересня</span> - Воздвиження Чесного Хреста<br>                            </div>
                         </div>
                         <div class="general-right">
-                            <h3 class="base-title">Заборонений час для весіль і забав</h3>
-                            <h3 class="base-title">Загальниці</h3>
+                            <h3 class="base-title">Заборонений час <br /> для весіль і забав</h3>
+                            <div>
+Під час всіх постів церковного року<br>Від Різдва до Богоявлення - <span class="celebration">7 січня - 19 січня</span><br>Субота перед М'ясопустною неділею - <span class="celebration">26 лютого</span><br>Неділя М'ясопустна - <span class="celebration">27 лютого</span><br>Субота перед Сиропустною неділею - <span class="celebration">5 березня</span><br>Неділя Сиропустна - <span class="celebration">6 березня</span><br>Від Світлого Понеділка до Томиної неділі - <span class="celebration">25 квітня - 1 травня</span><br>Усікновення Глави Йоана Хрестителя - <span class="celebration">11 вересня</span><br>Воздвиження Чесного Хреста - <span class="celebration">27 вересня</span><br>Заупокійна субота - <span class="celebration">11 червня</span><br>                            </div>
+                            <h3 class="base-title mt-2">Загальниці</h3>
+                            <div>
+з <span class="celebration">7 січня</span> по <span class="celebration">17 січня</span><br>з <span class="celebration">14 лютого</span> по <span class="celebration">20 лютого</span><br>з <span class="celebration">25 квітня</span> по <span class="celebration">1 травня</span><br>з <span class="celebration">13 червня</span> по <span class="celebration">19 червня</span><br>                            </div>
                         </div>
-                        <div class="general-bottom">
-                            Впродовж року кожного місяця:<span class="celebration">
-                                7 число </span> - Набоженство до Празького Дитятка-Ісуса<br>
-                            <span class="celebration">13 число </span>- День Матері Божої Фатімської<br>
-                            <span class="celebration">21 число</span> - Набоженство до Дитятка-Марії
+                        <div class="general-bottom container">
+                            <div class="row no-gutters">
+                                <div class="col-auto mr-1">Впродовж року кожного місяця:</div>
+                                <div class="col">
+                                    <span class="celebration">
+                                        7 число </span> - Набоженство до Празького Дитятка-Ісуса<br>
+                                    <span class="celebration">13 число </span>- День Матері Божої Фатімської<br>
+                                    <span class="celebration">21 число</span> - Набоженство до Дитятка-Марії
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

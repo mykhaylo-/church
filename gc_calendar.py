@@ -412,30 +412,30 @@ def writeHtml():
 				for f in longFastings:
 					out.write(f.title)
 					if (f.startDate):
-						out.write(" з " + dateNmonth(f.startDate))
+						out.write(" з <span class=\"celebration\">" + dateNmonth(f.startDate))
 						if(f.endDate):
-							out.write(" по " + dateNmonth(f.endDate) +"<br>")
+							out.write("</span> по <span class=\"celebration\">" + dateNmonth(f.endDate) +"</span><br>")
 						else:
-							out.write("<br>")
+							out.write("</span><br>")
 					else:
 						out.write("<br>")
 			elif line.strip() == oneDayFastingsToken:
 				for f in oneDayFastings:
-					out.write(dateNmonth(f.startDate) + " - " + f.title + "<br>")
+					out.write("<span class=\"celebration\">" +dateNmonth(f.startDate) + "</span> - " + f.title + "<br>")
 			elif line.strip() == forbiddenTimesToken:
 				for f in forbiddenTimes:
 					out.write(f.title)
 					if (f.startDate):
-						out.write(" - " + dateNmonth(f.startDate))
+						out.write(" - <span class=\"celebration\">" + dateNmonth(f.startDate))
 						if(f.endDate):
-							out.write(" - " + dateNmonth(f.endDate) +"<br>")
+							out.write(" - " + dateNmonth(f.endDate) +"</span><br>")
 						else:
-							out.write("<br>")
+							out.write("</span><br>")
 					else:
 						out.write("<br>")
 			elif line.strip() == fastingFreeTimesToken:
 				for f in fastFreeTimes:
-					out.write("з " + dateNmonth(f.startDate) + " по " + dateNmonth(f.endDate) + "<br>")
+					out.write("з <span class=\"celebration\">" + dateNmonth(f.startDate) + "</span> по <span class=\"celebration\">" + dateNmonth(f.endDate) + "</span><br>")
 			elif line.strip() == "{{year}}":
 				out.write(repr(year))
 			else:
