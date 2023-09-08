@@ -386,7 +386,7 @@ def writeCalendar():
 
 	for month in months:
 		month_file = codecs.open(dir + "/" + str(month) + ".ndm", "w", "utf-8-sig")
-		# month_file.write(codecs.BOM_UTF8 + '\n')
+		month_file.write('\n') #codecs.BOM_UTF8 + '\n')
 		month_days_written = 0
 		while month_days_written < month_sizes[month-1]:
 			day = days[total_days_written + month_days_written]
