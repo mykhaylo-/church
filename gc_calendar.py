@@ -1,13 +1,17 @@
 # coding=utf-8
-import re,codecs,datetime,os
+import re,codecs,datetime,os, sys
 import locale
 from datetime import date, timedelta
 import calendar
 import json
 
-
 locale.setlocale(locale.LC_TIME, "uk_UA")
-year = 2023 # is initialized using fixed_dates
+
+easter_date_str = sys.argv[1] # YYYY-MM-DD
+easter_date = datetime.datetime(*[int(item) for item in easter_date_str.split('-')]).date()
+
+year = easter_date.year
+
 fixed_dates = {} # is loaded from the file
 
 month_sizes = [31, 29 if calendar.isleap(year) else 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
@@ -323,6 +327,7 @@ def initCalendar():
 
 	with open("new-style/fixed_dates.json") as file:
 		fixed_dates = json.loads(file.read(), object_hook=datetime_parser)
+	fixed_dates["Пасха"] = easter_date
 
 	months = range(12)
 	for month in months:
