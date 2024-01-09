@@ -44,6 +44,7 @@ fixedDateRegex = re.compile("^([0-9]{1,2}) (січня|лютого|березн
 #labelRegex = re.compile("^([абвгґдеєжзиіїйклмнопрстуфхцчшщьюяАБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯ]+).*:$", re.U)
 labelRegex = re.compile("^(.+):$")
 conditionRegex = re.compile("(.+),(.+):(.+)")
+
 def readLine(_file):
 	while True:
 		line = _file.readline()
@@ -71,7 +72,7 @@ def readLineEvenIfEmpty(_file):
 	return line
 
 def readFile(fileName, entryType):
-	file = open(fileName,"r")
+	file = open(fileName,"r", encoding='utf-8')
 	while 1:
 		line1 = readLine(file)
 
@@ -113,7 +114,7 @@ def readAdditional():
 	readFile("new-style/add.txt", "additional")
 
 def readConditions():
-	file = open("new-style/conditions","r")
+	file = open("new-style/conditions","r", encoding='utf-8')
 	while 1:
 		line1 = readLine(file)
 		if not line1:
@@ -129,7 +130,7 @@ def readConditions():
 		conditions.append(condition)
 
 def readFastings():
-	file = open("new-style/fastings.txt","r")
+	file = open("new-style/fastings.txt","r", encoding='utf-8')
 	while 1:
 		line1 = readLine(file)
 		if not line1:
@@ -152,7 +153,7 @@ def readFastings():
 	file.close()
 
 def readForbiddenTimes():
-	file = open("new-style/forbidden-times.txt","r")
+	file = open("new-style/forbidden-times.txt","r", encoding='utf-8')
 	while 1:
 		line1 = readLine(file)
 		if not line1:
@@ -172,7 +173,7 @@ def readForbiddenTimes():
 	file.close()
 
 def readFastFreeTimes():
-	file = open("new-style/fast-free.txt","r")
+	file = open("new-style/fast-free.txt","r", encoding='utf-8')
 	while 1:
 		line1 = readLine(file)
 		line2 = readLine(file)
@@ -325,8 +326,9 @@ def datetime_parser(dct):
 def initCalendar():
 	global fixed_dates
 
-	with open("new-style/fixed_dates.json") as file:
+	with open("new-style/fixed_dates.json", encoding= 'utf-8') as file:
 		fixed_dates = json.loads(file.read(), object_hook=datetime_parser)
+
 	fixed_dates["Пасха"] = easter_date
 
 	months = range(12)
@@ -386,7 +388,7 @@ def writeCalendar():
 
 	for month in months:
 		month_file = codecs.open(dir + "/" + str(month) + ".ndm", "w", "utf-8-sig")
-		month_file.write('\n') #codecs.BOM_UTF8 + '\n')
+		month_file.write('\n')#codecs.BOM_UTF8 + '\n')
 		month_days_written = 0
 		while month_days_written < month_sizes[month-1]:
 			day = days[total_days_written + month_days_written]
