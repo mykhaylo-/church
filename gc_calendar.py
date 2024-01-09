@@ -31,7 +31,7 @@ forbiddenTimesToken = "{{forbidden-times}}"
 
 days = []
 entry_by_date = {}
-date_by_label = {}
+dates_by_label = {}
 conditions = []
 
 oneDayFastings = []
@@ -95,11 +95,11 @@ def readFile(fileName, entryType):
 		entry.value_type = entryType
 		if label:
 			entry.label = label
+			dates_by_label[label] = entry.dates
 		for d in entry.dates:
 			if d.year == year:
 				entry_by_date[d].append(entry)
-			if label:
-				date_by_label[label] = d
+
 
 def readSaints():
 	print("Read saints")
@@ -349,13 +349,12 @@ def initCalendar():
 def filterEntries():
 	for c in conditions:
 		if c.entry2 == '*':
-			d = date_by_label[c.entry1]
-			for entry in list(entry_by_date[d]):
-				if entry.label != c.entryToLeave:
-					entry_by_date[d].remove(entry)
+			for d in dates_by_label[c.entry1]:
+				for entry in list(entry_by_date[d]):
+					if entry.label != c.entryToLeave:
+						entry_by_date[d].remove(entry)
 			continue
-		if date_by_label[c.entry1] == date_by_label[c.entry2]:
-			d = date_by_label[c.entry1]
+		for d in set(dates_by_label[c.entry1]).intersection(dates_by_label[c.entry2]):
 			for entry in list(entry_by_date[d]):
 				if entry.label in [c.entry1, c.entry2]:
 					if entry.label != c.entryToLeave:
