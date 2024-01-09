@@ -411,7 +411,7 @@ def writeHtml():
 	months = range(0,12)
 	total_days_written = 0
 	
-	with open('html/template.html', 'r', encoding='utf-8') as template, open('html/'+ str(year) + ".html", 'w') as out:
+	with open('html/template.html', 'r', encoding='utf-8') as template, open('html/'+ str(year) + ".html", 'w', encoding='utf-8') as out:
 		for line in template:
 			if line.strip() in tokens_to_months:
 				month = tokens_to_months[line.strip()]
