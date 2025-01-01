@@ -104,6 +104,8 @@ def readFile(fileName, entryType):
 def readSaints():
 	print("Read saints")
 	readFile("new-style/saints.txt", "saint")
+	if calendar.isleap(year):
+		readFile("new-style/saints-leap.txt", "saint")
 
 def readCelebr():
 	print("Read celebr")
